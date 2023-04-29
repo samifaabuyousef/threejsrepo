@@ -1,0 +1,31 @@
+
+<div class="page-container">
+    <div #rendererContainer></div>
+    <div class="player-controls shadow-sm p-3 mb-5 bg-body " >
+            
+        <mat-slider thumbLabel [displayWith]="formatLabel" tickInterval="1" [(ngModel)]="index"  [step]="step" min="0" max="24"
+        (input)="movingSlider($event)"
+        >
+        </mat-slider>
+        <div class="top-controls d-flex justify-content-between">
+            
+            <div>
+                <button class="mx-1"  mat-button (click)="previous()">
+                    <mat-icon>fast_rewind</mat-icon>
+                </button>
+                <button  mat-button (click)="play()"  class="mx-1">
+                    <mat-icon>play_circle_filled</mat-icon>
+                </button>
+                <button  mat-button (click)="pause()"  class="mx-1">
+                    <mat-icon>pause_circle_filled</mat-icon>
+                </button>
+                <button  mat-button class="mx-1" (click)='next()'>
+                    <mat-icon>fast_forward</mat-icon>
+                </button>
+            </div>
+    
+        </div>
+
+    
+    </div>
+</div>

@@ -102,21 +102,51 @@ export class SceneComponent implements AfterViewInit {
 
     this.scene.add(group);
     // for adding  ground uncomment the following
-    // this.addGround();
+    this.addGround();
     // for changing the light position
-    // this.changeLightPostion();
+    // this.setInitialLightPostion();
   }
 
   showTime: string;
   step = 1 / 60;
 
+  setInitialLightPostion() {
+    const light2 = new THREE.DirectionalLight(0xffffff, 0.8);
+    light2.position.set(-24, 4, -5);
+    light2.castShadow = true;
+    this.scene.add(light2);
+
+  }
+
 
   changeLightPostion() {
     // the direction of the light could be animated with the time also by changing the position
+    if(this.index < 6) return
+    if(this.index > 18) return
+
+
     const light2 = new THREE.DirectionalLight(0xffffff, 0.8);
     light2.position.set(-5, 4, -5);
-    light2.castShadow = true;
     this.scene.add(light2);
+    let lightX = this.index;
+    let lightStep = 0.05;
+
+    lightX += lightStep;
+    let lightY = this.index;
+
+    if (this.index < 18 || this.index > 6) {
+      console.log(lightX)
+
+      lightStep *= -1;
+
+    }
+    light2.position.set(lightX, lightY*0.4, -5);
+    // light2.position.setX(lightX);
+
+    this.controlUpdate();
+    
+    this.camera.updateProjectionMatrix();
+    this.animate();
 
   }
 
@@ -145,11 +175,15 @@ export class SceneComponent implements AfterViewInit {
     if (this.index - 2 <= 0) {
       this.index = 0;
     }
-    if (this.isPlaying) this.play();
+    if (this.isPlaying)
+    this.play();
   }
 
   play() {
     this.isPlaying = true;
+    if(this.isPlaying) {
+      clearInterval(this.intervalId);
+    }
     if (this.index > 24) {
       this.index = 0;
       this.isPlaying = false;
@@ -158,6 +192,7 @@ export class SceneComponent implements AfterViewInit {
       this.index++;
       let dateObj = this.getTime(this.index);
       this.changeBrightness(dateObj);
+      // this.changeLightPostion()
       if (this.index > 24) {
         clearInterval(this.intervalId);
       }
